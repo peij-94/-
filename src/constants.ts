@@ -77,13 +77,36 @@ export const ALL_CARDS: Card[] = [
     value: 25,
     cost: 2,
     rarity: 'legendary'
+  },
+  {
+    id: 'quick_strike',
+    name: '迅捷打击',
+    description: '造成 4 点伤害。',
+    type: CardType.ATTACK,
+    value: 4,
+    cost: 0,
+    rarity: 'common'
+  },
+  {
+    id: 'meditation',
+    name: '冥想',
+    description: '恢复 15 点生命值。',
+    type: CardType.HEAL,
+    value: 15,
+    cost: 3,
+    rarity: 'epic'
   }
 ];
 
 export const INITIAL_DECK: Card[] = [
-  ...Array(5).fill(ALL_CARDS[0]), // 5 Strikes
-  ...Array(4).fill(ALL_CARDS[2]), // 4 Defends
+  ...Array(3).fill(ALL_CARDS[0]), // 3 Strikes
+  ...Array(3).fill(ALL_CARDS[2]), // 3 Defends
   ALL_CARDS[1], // 1 Bash
   ALL_CARDS[3], // 1 Fortify
   ALL_CARDS[4], // 1 Heal
+  ALL_CARDS[5], // 1 Fireball
+  ALL_CARDS[6], // 1 Divine Shield
+  ALL_CARDS[7], // 1 Blood Rite
+  ALL_CARDS[8], // 1 Quick Strike
+  ALL_CARDS[9], // 1 Meditation
 ];

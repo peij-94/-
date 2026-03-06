@@ -27,7 +27,53 @@
   @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl;
 }
 
-.card-common { @apply bg-stone-800 border-stone-600; }
-.card-rare { @apply bg-blue-900/40 border-blue-500/50; }
-.card-epic { @apply bg-purple-900/40 border-purple-500/50; }
-.card-legendary { @apply bg-amber-900/40 border-amber-500/50 shadow-[0_0_15px_rgba(245,158,11,0.3)]; }
+.card-common { 
+  @apply bg-stone-800 border-stone-600; 
+  background-image: radial-gradient(circle at top left, rgba(255,255,255,0.05), transparent);
+}
+.card-rare { 
+  @apply bg-blue-950/60 border-blue-400/50; 
+  background-image: radial-gradient(circle at top left, rgba(59,130,246,0.2), transparent);
+}
+.card-epic { 
+  @apply bg-purple-900/60 border-purple-400/50; 
+  background-image: radial-gradient(circle at top left, rgba(168,85,247,0.2), transparent);
+  box-shadow: inset 0 0 20px rgba(168,85,247,0.1);
+}
+.card-legendary { 
+  @apply bg-amber-900/60 border-amber-400/60; 
+  background-image: radial-gradient(circle at top left, rgba(245,158,11,0.3), transparent);
+  box-shadow: 0 0 20px rgba(245,158,11,0.2), inset 0 0 30px rgba(245,158,11,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-200%) skewX(-30deg); }
+  100% { transform: translateX(200%) skewX(-30deg); }
+}
+
+.animate-shine {
+  animation: shine 3s infinite;
+}
+
+.card-legendary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(245,158,11,0.1), transparent 20%);
+  animation: rotate 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.card-inner-shadow {
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+}

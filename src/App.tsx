@@ -322,14 +322,28 @@ const App: React.FC = () => {
             exit={{ scale: 2, opacity: 0, filter: "brightness(2) blur(10px)" }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             className={cn(
-              "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-80 rounded-2xl border-4 p-6 z-[70] shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col justify-between bg-stone-900",
+              "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-80 rounded-2xl border-4 p-6 z-[70] shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col justify-between bg-stone-900 overflow-hidden",
               playedCard.rarity === 'common' && "card-common",
               playedCard.rarity === 'rare' && "card-rare",
               playedCard.rarity === 'epic' && "card-epic",
               playedCard.rarity === 'legendary' && "card-legendary"
             )}
           >
-            <div className="flex justify-between items-start">
+            {/* Played Card Background Watermark */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-[0.05] pointer-events-none">
+              {playedCard.type === CardType.ATTACK && <Swords className="w-64 h-64 rotate-12" />}
+              {playedCard.type === CardType.DEFENSE && <Shield className="w-64 h-64 -rotate-12" />}
+              {playedCard.type === CardType.HEAL && <Heart className="w-64 h-64" />}
+              {playedCard.type === CardType.SPECIAL && <Zap className="w-64 h-64 rotate-45" />}
+            </div>
+
+            {playedCard.rarity !== 'common' && (
+              <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-1/2 -skew-x-12 animate-shine" />
+              </div>
+            )}
+
+            <div className="flex justify-between items-start relative z-10">
               <div className="bg-black/40 px-3 py-1 rounded text-sm font-mono font-bold text-amber-400 border border-amber-500/30">
                 {playedCard.cost}
               </div>
@@ -338,8 +352,14 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex-1 flex flex-col items-center justify-center text-center gap-4">
-              <div className="p-4 bg-white/5 rounded-full">
+            <div className="flex-1 flex flex-col items-center justify-center text-center gap-4 relative z-10">
+              <div className={cn(
+                "p-4 rounded-full relative",
+                playedCard.rarity === 'legendary' && "bg-amber-500/20 shadow-[0_0_30px_rgba(245,158,11,0.5)]",
+                playedCard.rarity === 'epic' && "bg-purple-500/20 shadow-[0_0_20px_rgba(168,85,247,0.4)]",
+                playedCard.rarity === 'rare' && "bg-blue-500/20",
+                playedCard.rarity === 'common' && "bg-white/5"
+              )}>
                 {playedCard.type === CardType.ATTACK && <Swords className="w-12 h-12 text-red-400" />}
                 {playedCard.type === CardType.DEFENSE && <Shield className="w-12 h-12 text-blue-400" />}
                 {playedCard.type === CardType.HEAL && <Heart className="w-12 h-12 text-green-400" />}
@@ -592,7 +612,7 @@ const App: React.FC = () => {
                   }
                 }}
                 className={cn(
-                  "absolute w-44 h-64 rounded-xl border-2 p-4 cursor-pointer transition-all flex flex-col justify-between shadow-2xl",
+                  "absolute w-44 h-64 rounded-xl border-2 p-4 cursor-pointer transition-all flex flex-col justify-between shadow-2xl overflow-hidden",
                   card.rarity === 'common' && "card-common",
                   card.rarity === 'rare' && "card-rare",
                   card.rarity === 'epic' && "card-epic",
@@ -604,7 +624,29 @@ const App: React.FC = () => {
                   marginLeft: `${(i - (gameState.hand.length - 1) / 2) * 120}px`,
                 }}
               >
-                <div className="flex justify-between items-start">
+                {/* Card Background Watermark */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
+                  {card.type === CardType.ATTACK && <Swords className="w-40 h-40 rotate-12" />}
+                  {card.type === CardType.DEFENSE && <Shield className="w-40 h-40 -rotate-12" />}
+                  {card.type === CardType.HEAL && <Heart className="w-40 h-40" />}
+                  {card.type === CardType.SPECIAL && <Zap className="w-40 h-40 rotate-45" />}
+                </div>
+
+                {/* Rarity Specific Effects */}
+                {card.rarity === 'legendary' && (
+                  <div className="absolute inset-0 bg-gradient-to-t from-amber-500/10 to-transparent pointer-events-none" />
+                )}
+                {card.rarity === 'epic' && (
+                  <div className="absolute inset-0 bg-gradient-to-t from-purple-500/10 to-transparent pointer-events-none" />
+                )}
+
+                {card.rarity !== 'common' && (
+                  <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent w-1/2 -skew-x-12 animate-shine" />
+                  </div>
+                )}
+
+                <div className="flex justify-between items-start relative z-10">
                   <div className="bg-black/40 px-2 py-1 rounded text-xs font-mono font-bold text-amber-400 border border-amber-500/30">
                     {card.cost}
                   </div>
@@ -614,7 +656,13 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="flex-1 flex flex-col items-center justify-center text-center gap-2">
-                  <div className="p-3 bg-white/5 rounded-full">
+                  <div className={cn(
+                    "p-3 rounded-full relative",
+                    card.rarity === 'legendary' && "bg-amber-500/20 shadow-[0_0_20px_rgba(245,158,11,0.4)]",
+                    card.rarity === 'epic' && "bg-purple-500/20 shadow-[0_0_15px_rgba(168,85,247,0.3)]",
+                    card.rarity === 'rare' && "bg-blue-500/20",
+                    card.rarity === 'common' && "bg-white/5"
+                  )}>
                     {card.type === CardType.ATTACK && <Swords className="w-8 h-8 text-red-400" />}
                     {card.type === CardType.DEFENSE && <Shield className="w-8 h-8 text-blue-400" />}
                     {card.type === CardType.HEAL && <Heart className="w-8 h-8 text-green-400" />}
